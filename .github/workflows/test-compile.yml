@@ -61,10 +61,10 @@ jobs:
 #          cd LostMinions_Libraries
 #          call sign_pfx_ci.bat "${{ secrets.LOSTMINIONS_PFX_PASSWORD }}"
 
-      - name: 📦 Restore NuGet Packages
-        shell: cmd
-        run: |
-          call restore_packages.bat
+#      - name: 📦 Restore NuGet Packages
+#        shell: cmd
+#        run: |
+#          call restore_packages.bat
 
       - name: 🏗️ Build Solution (Classic MSBuild)
         shell: pwsh
