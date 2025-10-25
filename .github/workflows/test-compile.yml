@@ -83,11 +83,13 @@ jobs:
           }
           Write-Host "🏗️ Using MSBuild at: $msbuild"
           & "$msbuild" $solution `
+            /t:Restore,Build `
             /m:4 /nr:false `
             /p:Configuration=Release `
             /p:Platform="Any CPU" `
             /p:CI=true `
             /p:StyleCopEnabled=false
+
           if ($LASTEXITCODE -ne 0) {
             Write-Host "❌ Build failed."
             exit $LASTEXITCODE
