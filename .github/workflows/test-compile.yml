@@ -18,28 +18,6 @@ jobs:
       SOLUTION_NAME: Mee6LevelsAPI.sln
 
     steps:
-#      - name: 🔑 Validate GitHub Token
-#        shell: pwsh
-#        run: |
-#          $token = "${{ secrets.GH_TOKEN }}"
-#          if (-not $token) {
-#            echo "⚠️ No GH_TOKEN provided — skipping build." >> $env:GITHUB_STEP_SUMMARY
-#            exit 78
-#          }
-#
-#          try {
-#            $resp = Invoke-RestMethod -Uri "https://api.github.com/user" -Headers @{ Authorization = "Bearer $token" } -ErrorAction Stop
-#            if ($null -eq $resp.login) {
-#              echo "⚠️ Token invalid — skipping build." >> $env:GITHUB_STEP_SUMMARY
-#              exit 78
-#            } else {
-#              echo "✅ Verified token: $($resp.login)" >> $env:GITHUB_STEP_SUMMARY
-#            }
-#          } catch {
-#            echo "⚠️ Token check failed: $_" >> $env:GITHUB_STEP_SUMMARY
-#            exit 78
-#          }
-
       - name: ⚙️ Configure Git
         shell: pwsh
         run: |
@@ -53,19 +31,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-#          token: ${{ secrets.GH_TOKEN }}
-
-#      - name: 🔏 Register Strong-Name Key | LostMinions.pfx
-#        shell: cmd
-#        run: |
-#          cd LostMinions_Libraries
-#          call sign_pfx_ci.bat "${{ secrets.LOSTMINIONS_PFX_PASSWORD }}"
-
-#      - name: 📦 Restore NuGet Packages
-#        shell: cmd
-#        run: |
-#          call restore_packages.bat
-
+          
       - name: 🏗️ Build Solution (Classic MSBuild)
         shell: pwsh
         run: |
@@ -89,7 +55,6 @@ jobs:
             /p:Platform="Any CPU" `
             /p:CI=true `
             /p:StyleCopEnabled=false
-
           if ($LASTEXITCODE -ne 0) {
             Write-Host "❌ Build failed."
             exit $LASTEXITCODE
