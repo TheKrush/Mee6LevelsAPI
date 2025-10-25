@@ -31,7 +31,39 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          
+
+      - name: 📦 Restore NuGet Packages
+        shell: pwsh
+        run: |
+          Write-Host "📦 Restoring NuGet packages..."
+
+          # Common VS NuGet paths to check
+          $possiblePaths = @(
+            "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\NuGet\NuGet.exe",
+            "C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\CommonExtensions\Microsoft\NuGet\NuGet.exe",
+            "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\NuGet\NuGet.exe",
+            "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\IDE\CommonExtensions\Microsoft\NuGet\NuGet.exe"
+          )
+
+          $nuget = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
+
+          if (-not $nuget) {
+            Write-Host "⚠️ NuGet.exe not found in Visual Studio paths. Downloading latest standalone version..."
+            Invoke-WebRequest -Uri "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile nuget.exe -UseBasicParsing
+            $nuget = ".\nuget.exe"
+          }
+
+          Write-Host "📦 Using NuGet at: $nuget"
+
+          & $nuget restore "$env:SOLUTION_NAME" -NonInteractive -Verbosity detailed
+
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "❌ NuGet restore failed."
+            exit $LASTEXITCODE
+          }
+
+          Write-Host "✅ NuGet packages restored successfully."
+
       - name: 🏗️ Build Solution (Classic MSBuild)
         shell: pwsh
         run: |
