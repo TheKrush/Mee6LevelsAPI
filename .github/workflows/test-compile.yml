@@ -1,0 +1,100 @@
+name: 🧪 C# Compilation Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+    paths:
+      - ".github/workflows/test-compile.yml"
+      - "**/*.cs"
+      - "**/*.csproj"
+      - "*.sln"
+
+jobs:
+  compile-test:
+    runs-on: windows-latest
+
+    env:
+      SOLUTION_NAME: Mee6LevelsAPI.sln
+
+    steps:
+#      - name: 🔑 Validate GitHub Token
+#        shell: pwsh
+#        run: |
+#          $token = "${{ secrets.GH_TOKEN }}"
+#          if (-not $token) {
+#            echo "⚠️ No GH_TOKEN provided — skipping build." >> $env:GITHUB_STEP_SUMMARY
+#            exit 78
+#          }
+#
+#          try {
+#            $resp = Invoke-RestMethod -Uri "https://api.github.com/user" -Headers @{ Authorization = "Bearer $token" } -ErrorAction Stop
+#            if ($null -eq $resp.login) {
+#              echo "⚠️ Token invalid — skipping build." >> $env:GITHUB_STEP_SUMMARY
+#              exit 78
+#            } else {
+#              echo "✅ Verified token: $($resp.login)" >> $env:GITHUB_STEP_SUMMARY
+#            }
+#          } catch {
+#            echo "⚠️ Token check failed: $_" >> $env:GITHUB_STEP_SUMMARY
+#            exit 78
+#          }
+
+      - name: ⚙️ Configure Git
+        shell: pwsh
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global credential.helper store
+#          echo "https://x-access-token:${{ secrets.GH_TOKEN }}@github.com" > $env:USERPROFILE\.git-credentials
+          
+      - name: 🧾 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+#          token: ${{ secrets.GH_TOKEN }}
+
+#      - name: 🔏 Register Strong-Name Key | LostMinions.pfx
+#        shell: cmd
+#        run: |
+#          cd LostMinions_Libraries
+#          call sign_pfx_ci.bat "${{ secrets.LOSTMINIONS_PFX_PASSWORD }}"
+
+      - name: 📦 Restore NuGet Packages
+        shell: cmd
+        run: |
+          call restore_packages.bat
+
+      - name: 🏗️ Build Solution (Classic MSBuild)
+        shell: pwsh
+        run: |
+          $solution = "$env:SOLUTION_NAME"
+          $possiblePaths = @(
+            "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
+            "C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe",
+            "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe",
+            "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+          )
+          $msbuild = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $msbuild) {
+            Write-Host "❌ Could not locate MSBuild.exe."
+            exit 1
+          }
+          Write-Host "🏗️ Using MSBuild at: $msbuild"
+          & "$msbuild" $solution `
+            /m:4 /nr:false `
+            /p:Configuration=Release `
+            /p:Platform="Any CPU" `
+            /p:CI=true `
+            /p:StyleCopEnabled=false
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "❌ Build failed."
+            exit $LASTEXITCODE
+          } else {
+            Write-Host "✅ Build succeeded."
+          }
+
+      - name: ✅ Verify Build Success
+        run: echo "✅ $env:SOLUTION_NAME compiled successfully on GitHub Actions."
+ 
