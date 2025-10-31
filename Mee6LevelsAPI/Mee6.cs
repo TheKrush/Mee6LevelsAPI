@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.IO;
+﻿using Newtonsoft.Json;
+
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Mee6LevelsAPI
 {
@@ -65,16 +59,12 @@ namespace Mee6LevelsAPI
             return server;
         }
 
-        public static Image GetAvatar(Mee6UserInfo user, int size)
+        public static async Task<Image<Rgba32>> GetAvatarAsync(Mee6UserInfo user, int size)
         {
             string imageUrl = $"https://cdn.discordapp.com/avatars/{user.Id}/{user.Avatar}?size={size}";
-            using (System.Net.WebClient webClient = new System.Net.WebClient())
-            {
-                using (Stream stream = webClient.OpenRead(imageUrl))
-                {
-                    return Image.FromStream(stream);
-                }
-            }
+            using var httpClient = new HttpClient();
+            using var stream = await httpClient.GetStreamAsync(imageUrl);
+            return await Image.LoadAsync<Rgba32>(stream);
         }
     }
 
