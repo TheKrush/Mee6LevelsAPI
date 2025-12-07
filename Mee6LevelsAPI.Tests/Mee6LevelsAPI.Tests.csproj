@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Inherit TargetFramework/Nullable/ImplicitUsings from Directory.Build.props -->
+    <RootNamespace>Mee6LevelsAPI.Tests</RootNamespace>
+    <AssemblyName>Mee6LevelsAPI.Tests</AssemblyName>
+
+    <!-- Don't ever pack this project -->
+    <IsPackable>false</IsPackable>
+
+    <!-- Match your strictness if you want tests to be just as clean -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference the main library project -->
+    <ProjectReference Include="..\Mee6LevelsAPI\Mee6LevelsAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="xunit" Version="2.*" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="8.8.0" />
+  </ItemGroup>
+
+</Project>

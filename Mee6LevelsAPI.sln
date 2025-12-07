@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mee6LevelsAPI", "Mee6LevelsAPI\Mee6LevelsAPI.csproj", "{AC3BDAED-B576-425E-8893-EDDB796C214F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mee6LevelsAPI.Tests", "Mee6LevelsAPI.Tests\Mee6LevelsAPI.Tests.csproj", "{FD769813-41E0-A579-9F32-110065E5073D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{AC3BDAED-B576-425E-8893-EDDB796C214F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC3BDAED-B576-425E-8893-EDDB796C214F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC3BDAED-B576-425E-8893-EDDB796C214F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD769813-41E0-A579-9F32-110065E5073D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD769813-41E0-A579-9F32-110065E5073D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD769813-41E0-A579-9F32-110065E5073D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD769813-41E0-A579-9F32-110065E5073D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FD769813-41E0-A579-9F32-110065E5073D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC28C2AB-FAB9-4442-8812-48ADFB08FA3D}
