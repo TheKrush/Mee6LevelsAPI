@@ -7,13 +7,14 @@ namespace Mee6LevelsAPI
 {
     public static class Mee6
     {
-        const string Url = "https://mee6.xyz/api/plugins/levels/leaderboard/";
+        private const string Url = "https://mee6.xyz/api/plugins/levels/leaderboard/";
         public static int Limit = 1000;
+
         public static Mee6UserInfo GetUserInfo(long guildID, long userID)
         {
             Mee6Server server = GetServer(guildID);
 
-            for(int i = 0; i < Limit; i++)
+            for (int i = 0; i < Limit; i++)
             {
                 Mee6UserInfo user = server.Users[i];
                 if (user.Id.Equals(userID.ToString()))
@@ -26,9 +27,9 @@ namespace Mee6LevelsAPI
 
         public static Mee6Server GetServer(long guildID)
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = new();
             HttpResponseMessage response = client.GetAsync(Url + $"{guildID}?limit={Limit}").Result;
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
             string responseBody = response.Content.ReadAsStringAsync().Result;
 
             Mee6Server server = JsonConvert.DeserializeObject<Mee6Server>(responseBody);
@@ -37,9 +38,9 @@ namespace Mee6LevelsAPI
 
         public static async Task<Mee6Server> GetServerAsync(long guildID)
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = new();
             HttpResponseMessage response = await client.GetAsync(Url + $"{guildID}?limit={Limit}");
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
 
             Mee6Server server = JsonConvert.DeserializeObject<Mee6Server>(responseBody);
@@ -48,9 +49,9 @@ namespace Mee6LevelsAPI
 
         public static Mee6Server GetServer(long guildID, string fileName)
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = new();
             HttpResponseMessage response = client.GetAsync(Url + $"{guildID}?limit={Limit}").Result;
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
             string responseBody = response.Content.ReadAsStringAsync().Result;
 
             Mee6Server server = JsonConvert.DeserializeObject<Mee6Server>(responseBody);
@@ -62,8 +63,8 @@ namespace Mee6LevelsAPI
         public static async Task<Image<Rgba32>> GetAvatarAsync(Mee6UserInfo user, int size)
         {
             string imageUrl = $"https://cdn.discordapp.com/avatars/{user.Id}/{user.Avatar}?size={size}";
-            using var httpClient = new HttpClient();
-            using var stream = await httpClient.GetStreamAsync(imageUrl);
+            using HttpClient httpClient = new();
+            using Stream stream = await httpClient.GetStreamAsync(imageUrl);
             return await Image.LoadAsync<Rgba32>(stream);
         }
     }
@@ -72,20 +73,28 @@ namespace Mee6LevelsAPI
     {
         [JsonProperty("avatar")]
         public string Avatar;
+
         [JsonProperty("detailed_xp")]
         public int[] DetailedXp;
+
         [JsonProperty("discriminator")]
         public string Discriminator;
+
         [JsonProperty("guild_id")]
         public string GuildId;
+
         [JsonProperty("id")]
         public string Id;
+
         [JsonProperty("level")]
         public long Level;
+
         [JsonProperty("message_count")]
         public long MessageCount;
+
         [JsonProperty("username")]
         public string Username;
+
         [JsonProperty("xp")]
         public long Xp;
     }
@@ -94,16 +103,22 @@ namespace Mee6LevelsAPI
     {
         [JsonProperty("allow_join")]
         public bool AllowJoin;
+
         [JsonProperty("icon")]
         public string Icon;
+
         [JsonProperty("id")]
         public string Id;
+
         [JsonProperty("invite_leaderboard")]
         public bool InviteLeaderboard;
+
         [JsonProperty("leaderboard_url")]
         public string LeaderboardURL;
+
         [JsonProperty("name")]
         public string Name;
+
         [JsonProperty("premium")]
         public bool Premium;
     }
@@ -112,6 +127,7 @@ namespace Mee6LevelsAPI
     {
         [JsonProperty("rank")]
         public long Rank;
+
         [JsonProperty("role")]
         public Mee6Role Role;
     }
@@ -120,18 +136,25 @@ namespace Mee6LevelsAPI
     {
         [JsonProperty("color")]
         public long Color;
+
         [JsonProperty("hoist")]
         public bool Hoist;
+
         [JsonProperty("id")]
         public string Id;
+
         [JsonProperty("managed")]
         public bool Managed;
+
         [JsonProperty("mentionable")]
         public bool Mentionable;
+
         [JsonProperty("name")]
         public string Name;
+
         [JsonProperty("permissions")]
         public long Permissions;
+
         [JsonProperty("position")]
         public long Position;
     }
@@ -140,21 +163,29 @@ namespace Mee6LevelsAPI
     {
         [JsonProperty("admin")]
         public bool Admin;
+
         [JsonProperty("banner_url")]
         public string BannerURL;
+
         [JsonProperty("guild")]
         public Mee6GuildInfo Guild;
+
         [JsonProperty("is_member")]
         public bool IsMember;
+
         [JsonProperty("page")]
         public long Page;
+
         [JsonProperty("players")]
         public Mee6UserInfo[] Users;
+
         [JsonProperty("role_rewards")]
         public Mee6RoleInfo[] RewardRoles;
+
         //user_guild_settings not implemented
         [JsonProperty("xp_per_message")]
         public long[] XPPerMessage;
+
         [JsonProperty("xp_rate")]
         public long XPRate;
     }
