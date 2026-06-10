@@ -15,7 +15,6 @@
     <!-- Core dependencies -->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="RestSharp" Version="114.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
 
     <!-- Optional helpers -->
     <!-- <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" /> -->

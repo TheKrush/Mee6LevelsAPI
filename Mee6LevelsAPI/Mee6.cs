@@ -1,8 +1,5 @@
 using Newtonsoft.Json;
 
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-
 namespace Mee6LevelsAPI
 {
     public static class Mee6
@@ -60,12 +57,11 @@ namespace Mee6LevelsAPI
             return server;
         }
 
-        public static async Task<Image<Rgba32>> GetAvatarAsync(Mee6UserInfo user, int size)
+        public static async Task<byte[]> GetAvatarAsync(Mee6UserInfo user, int size)
         {
             string imageUrl = $"https://cdn.discordapp.com/avatars/{user.Id}/{user.Avatar}?size={size}";
             using HttpClient httpClient = new();
-            using Stream stream = await httpClient.GetStreamAsync(imageUrl);
-            return await Image.LoadAsync<Rgba32>(stream);
+            return await httpClient.GetByteArrayAsync(imageUrl);
         }
     }
 
