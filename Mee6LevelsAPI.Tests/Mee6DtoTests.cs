@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Mee6LevelsAPI.Tests
 {
-    public sealed class Mee6DtoTests
+    public sealed class Mee6DTOTests
     {
         [Fact]
         public void Mee6UserInfo_JsonSerialization_RoundTripsFields()
